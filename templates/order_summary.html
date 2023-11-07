@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Order Summary</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .customer-info, .order-summary {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .customer-info div, .order-item {
+            margin-bottom: 10px;
+        }
+        .warning {
+            color: #dc3545;
+            font-weight: bold;
+        }
+        a {
+            display: inline-block;
+            padding: 10px 15px;
+            text-decoration: none;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 5px;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Order Summary</h1>
+        <div class="customer-info">
+            <div><strong>Name:</strong> {{ customer_name }}</div>
+            <div><strong>Email:</strong> {{ customer_email }}</div>
+            <div><strong>Phone:</strong> {{ customer_phone }}</div>
+            <div><strong>Address:</strong> {{ customer_address }}</div>
+        </div>
+
+        {% for item in summary %}
+            <div class="order-summary">
+                <div class="order-item"><strong>Quantity:</strong> {{ item.quantity }}</div>
+                <div class="order-item"><strong>Item Code:</strong> {{ item.code }}</div>
+                <div class="order-item"><strong>Total:</strong> ${{ item.total_price|floatformat:2 }}</div>
+                <div class="order-item">
+                    {% if not item.exact_match %}
+                        <div class="warning">(Warning: This bundle does not match the exact order quantity.)</div>
+                    {% endif %}
+                </div>
+                <ul>
+                    {% for detail in item.bundles %}
+                        <li>{{ detail.num_bundles }} x {{ detail.bundle_quantity }} @ ${{ detail.bundle_price|floatformat:2 }} each</li>
+                    {% endfor %}
+                </ul>
+
+            </div>
+            <div>
+                <div><strong>Total Price:</strong> {{ total_price|floatformat:2 }}</div>
+            </div>
+        {% endfor %}
+
+        <a href="{% url 'place_order' %}">Place another order</a>
+    </div>
+</body>
+</html>

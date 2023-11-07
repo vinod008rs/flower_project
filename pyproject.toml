@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "flower-project"
+version = "0.1.0"
+description = ""
+authors = ["Vinodrd <vinod007rs@gmail.com>"]
+readme = "README.md"
+packages = [{include = "flower_project"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+django = "^4.2.7"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Place Order</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .navigation a {
+            padding: 10px 15px;
+            text-decoration: none;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .product-listing {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 5px;
+        }
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        form p {
+            margin: 10px 0;
+        }
+        input[type="submit"] {
+            padding: 10px 15px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        input[type="submit"]:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="navigation">
+            <h1>Place your order</h1>
+            <a href="{% url 'order_history' %}">Order History</a>
+        </div>
+
+        <div class="product-listing">
+            <h2>Available Products</h2>
+            {% for product in products_with_bundles %}
+                <p><strong>{{ product.name }} ({{ product.code }})</strong></p>
+                <ul>
+                    {% for bundle in product.bundles %}
+                        <li>{{ bundle.quantity }} @ ${{ bundle.price }}</li>
+                    {% endfor %}
+                </ul>
+            {% endfor %}
+        </div>
+        {% if messages %}
+            <div class="alert alert-danger" role="alert">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+        <form method="post" action="">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+</body>
+</html>

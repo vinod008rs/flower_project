@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Order History</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            padding: 20px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .order-history {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .order-history div {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .order-history .row-header {
+            background-color: #f0f0f0;
+            font-weight: bold;
+        }
+        .add-order {
+            padding: 10px 15px;
+            text-decoration: none;
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        .total-sales {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Order History</h1>
+            <a href="{% url 'place_order' %}" class="add-order">Add Order</a>
+        </div>
+
+        <div class="order-history">
+            <div class="row-header">Order ID</div>
+            <div class="row-header">Date</div>
+            <div class="row-header">Customer</div>
+            <div class="row-header">Total Price</div>
+
+            {% for order in orders %}
+                <div>{{ order.id }}</div>
+                <div>{{ order.order_date }}</div>
+                <div>{{ order.customer_name }}</div>
+                <div>${{ order.total_price|floatformat:2|default:"0.00" }}</div>
+            {% endfor %}
+        </div>
+
+        <h2 class="total-sales">Total Sales: ${{ total_sales|floatformat:2 }}</h2>
+    </div>
+</body>
+</html>
